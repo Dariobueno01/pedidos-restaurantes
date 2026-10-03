@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type LastOrder = {
@@ -11,7 +11,7 @@ type LastOrder = {
   total: number | null;
 };
 
-export default function PedidoConfirmadoPage() {
+function PedidoConfirmadoContent() {
   const searchParams = useSearchParams();
   const restaurantSlug = searchParams.get("restaurant");
 
@@ -371,5 +371,20 @@ export default function PedidoConfirmadoPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+
+export default function PedidoConfirmadoPage() {
+  return (
+    <Suspense fallback={
+      <main className="flex min-h-screen items-center justify-center bg-zinc-50 p-6">
+        <div className="text-sm font-semibold text-zinc-500">
+          Cargando pedido...
+        </div>
+      </main>
+    }>
+      <PedidoConfirmadoContent />
+    </Suspense>
   );
 }

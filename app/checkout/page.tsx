@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import ConfirmButton from "./ConfirmButton";
 
@@ -20,7 +20,7 @@ type RestaurantSettings = {
   deliveryFee: number | null;
 };
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const searchParams = useSearchParams();
   const restaurantSlug = searchParams.get("restaurant");
 
@@ -561,5 +561,20 @@ export default function CheckoutPage() {
         )}
       </div>
     </main>
+  );
+}
+
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <main className="flex min-h-screen items-center justify-center bg-zinc-50 p-6">
+        <div className="text-sm font-semibold text-zinc-500">
+          Cargando checkout...
+        </div>
+      </main>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }
